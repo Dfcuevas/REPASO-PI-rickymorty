@@ -1,8 +1,5 @@
-
 function App() {
-  return (
-    <div></div>
-  )
+  return <div>Rick and morty App</div>;
 }
 
 export default App;
