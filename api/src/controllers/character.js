@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { Character, Episode } = require("../db");
 
 const getApiCharacters = async () => {
   try {
@@ -20,19 +21,32 @@ const getApiCharacters = async () => {
 
       apiUrl = apiData.data.info.next;
     }
+
     return allCharacters;
-    /* const apiInfo = await axios.get(
-      "https://rickandmortyapi.com/api/character"
-    );
-    const apiJson = apiInfo.data.results?.map((el) => {
-      return {
-        name: el.name,
-        species: el.species,
-        origin: el.origin.name,
-        image: el.image,
-      };
-    });
-    return apiJson; */
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getDbCharacters = async () => {
+  return await Character.findAll({
+    include: {
+      model: Episode,
+      attributes: ["name"],
+      through: {
+        attributes: [],
+      },
+    },
+  });
+};
+
+const getAllinfo = async () => {
+  try {
+    const dbinfo = await getDbCharacters();
+
+    const apiInfo = await getApiCharacters();
+    const infoTot = dbinfo?.concat(apiInfo);
+    return infoTot;
   } catch (error) {
     console.log(error);
   }
@@ -40,4 +54,6 @@ const getApiCharacters = async () => {
 
 module.exports = {
   getApiCharacters,
+  getDbCharacters,
+  getAllinfo,
 };
