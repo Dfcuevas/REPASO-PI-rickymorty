@@ -1,11 +1,12 @@
 const express = require("express");
-const getEpisodesApi = require("../controllers/episode");
+/* const getEpisodesApi = require("../controllers/episode"); */
+const { Episode } = require("../db");
 
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const apiData = await getEpisodesApi();
+    const apiData = await Episode.findAll();
 
     apiData
       ? res.status(200).send(apiData)

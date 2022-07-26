@@ -42,8 +42,6 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 const { Character, Episode } = sequelize.models;
 
-console.log(Sequelize.models);
-
 Episode.belongsToMany(Character, { through: "Episode_Character" });
 Character.belongsToMany(Episode, { through: "Episode_Character" });
 

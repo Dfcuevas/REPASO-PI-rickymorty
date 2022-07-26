@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { Episode } = require("../db");
 
 const getEpisodesApi = async () => {
   try {
@@ -9,13 +10,15 @@ const getEpisodesApi = async () => {
 
       apiData.data.results?.forEach((el) => {
         return allEpisodes.push({
-          id: el.id,
           name: el.name,
         });
       });
 
       apiUrl = apiData.data.info.next;
     }
+
+    await Episode.bulkCreate(allEpisodes);
+
     return allEpisodes;
   } catch (error) {
     console.log(error);
